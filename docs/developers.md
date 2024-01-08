@@ -1,6 +1,6 @@
 ## Developer-1
 
-![ugur coruh](https://avatars.githubusercontent.com/u/7415667?v=4)
+![ahmetberacelik](https://avatars.githubusercontent.com/u/147909969?v=4)
 
 Developer-1 Summary
 
@@ -8,7 +8,7 @@ Developer-1 Summary
 
 ## Developer-2
 
-![](assets/2023-05-26-11-23-01-image.png)
+![Eneskoy](https://avatars.githubusercontent.com/u/147629925?v=4)
 
 Developer-2 Summary
 
