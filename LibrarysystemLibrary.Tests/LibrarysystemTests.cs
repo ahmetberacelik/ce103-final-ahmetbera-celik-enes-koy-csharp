@@ -294,3 +294,353 @@ namespace LibrarysystemLibrary.Tests
             Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
             Console.SetIn(new StreamReader(Console.OpenStandardInput()));
         }
+        [Fact]
+        public void ReservationAndRenewalInvalidTest()
+        {
+            var input = new StringReader("abc\n\n48\n\n4\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReservationAndRenewal();
+
+            string expectedOutput = "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Invalid choice. Please enter a number.\r\n" +
+                "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Invalid choice. Please try again.\r\n" +
+                "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReservationAndRenewalValidTest()
+        {
+            var input = new StringReader("1\n4\n2\n\n3\n\n4\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReservationAndRenewal();
+
+            string expectedOutput = "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "You have no borrowed material.\r\n" +
+                "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "You have no borrowed material.\r\n" +
+                "1. Reserve Items\r\n" +
+                "2. Restore Items\r\n" +
+                "3. View Reservation\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReservationScreenLoginInvalid()
+        {
+            var input = new StringReader("Invalid User\n\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReservationScreenLogin();
+
+            string expectedOutput = "Please register with your user name.\r\n" +
+                "Write your user name:\r\n" +
+                "The username you entered is not registered. Please check your entry.\r\n";
+
+            Assert.False(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReserveItemsTest()
+        {
+            var input = new StringReader("1\n\n\n2\n\n\n3\n\n\n4\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveItems();
+
+            string expectedOutput = "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Please write book name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Crime and Punishment):\r\n" +
+                "Sorry, the book is not available.\r\n" +
+                "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Please write movie name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Into the Wild):\r\n" +
+                "Sorry, the movie is not available.\r\n" +
+                "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Please write music name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Castle of Glass):\r\n" +
+                "Sorry, the music is not available.\r\n" +
+                "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReserveItemsInvalidTest()
+        {
+            var input = new StringReader("abc\n\n48\n\n4\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveItems();
+
+            string expectedOutput = "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Invalid choice. Please enter a number.\r\n" +
+                "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):" +
+                "Invalid choice. Please try again.\r\n" +
+                "1. Reserve Books\r\n" +
+                "2. Reserve Movies\r\n" +
+                "3. Reserve Music\r\n" +
+                "4. Exit\r\n" +
+                "Enter your choice (1-4):";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReserveBooksValid()
+        {
+            var input = new StringReader("Uncle Vanya");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveBook();
+
+            string expectedOutput = "Please write book name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Crime and Punishment):\r\n" +
+                "The book Uncle Vanya is available.\r\n" +
+                "Uncle Vanya is reserved by Example User.\r\n";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReserveMovieValid()
+        {
+            var input = new StringReader("Into the Wild");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveMovie();
+
+            string expectedOutput = "Please write movie name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Into the Wild):\r\n" +
+                "The movie Into the Wild is available.\r\n" +
+                "Into the Wild is reserved by Example User.\r\n";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void ReserveMusicValid()
+        {
+            var input = new StringReader("Mockingbird");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveMusic();
+
+            string expectedOutput = "Please write music name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Castle of Glass):\r\n" +
+                "The music Mockingbird is available.\r\n" +
+                "Mockingbird is reserved by Example User.\r\n";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void RestoreItemsValid()
+        {
+            var input = new StringReader("Uncle Vanya\n\n\nDelete\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveBook();
+            bool result2 = librarysystem.RestoreItems();
+
+            string expectedOutput = "Please write book name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Crime and Punishment):\r\n" +
+                "The book Uncle Vanya is available.\r\n" +
+                "Uncle Vanya is reserved by Example User.\r\n" +
+                "The item Uncle Vanya is reserved by Example User.\r\n" +
+                "If you want to delete your all reservations, write 'Delete'. If you didn't, enter wrong input.\r\n" +
+                "Your reservations have been cleaned.\r\n";
+            Assert.True(result);
+            Assert.True(result2);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void RestoreItemsInvalid()
+        {
+            var input = new StringReader("Uncle Vanya\n\n\nInvalid Input\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.ReserveBook();
+            bool result2 = librarysystem.RestoreItems();
+
+            string expectedOutput = "Please write book name you want to reserve, please pay attention to upper and lower case letters.\r\n" +
+                "(A correct example: Crime and Punishment):\r\n" +
+                "The book Uncle Vanya is available.\r\n" +
+                "Uncle Vanya is reserved by Example User.\r\n" +
+                "The item Uncle Vanya is reserved by Example User.\r\n" +
+                "If you want to delete your all reservations, write 'Delete'. If you didn't, enter wrong input.\r\n" +
+                "You entered wrong input!\r\n";
+            Assert.True(result);
+            Assert.False(result2);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
