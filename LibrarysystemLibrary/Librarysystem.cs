@@ -495,3 +495,252 @@ namespace LibrarysystemLibrary
             take_enter_input();
             return false;
         }
+        /**
+        * @brief Restores reserved items by deleting all reservations.
+        * 
+        * The function displays the user's reservations and prompts them to confirm the deletion of all reservations. 
+        * If confirmed, it deletes all reservations and restores the availability of the reserved items.
+        * 
+        * @return True if the reservations are successfully restored, otherwise false.
+        */
+        public bool RestoreItems()
+        {
+            if (!ViewReservation())
+            {
+                return false;
+            }
+            else
+            {
+                Console.WriteLine("If you want to delete your all reservations, write 'Delete'. If you didn't, enter wrong input.");
+                string deleteReservations = Console.ReadLine();
+                if (deleteReservations.Equals("Delete"))
+                {
+                    for (int i = 0; i < reservedItems.Length; i++)
+                    {
+                        reservedItems[i] = null;
+                    }
+                    reservedItemCount = 0;
+
+                    for (int j = 0; j < 5; j++)
+                    {
+                        books[j] = originalBooks[j];
+                        movies[j] = originalMovies[j];
+                        musics[j] = originalMusics[j];
+                    }
+                    Console.WriteLine("Your reservations have been cleaned.");
+                    take_enter_input();
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("You entered wrong input!");
+                    take_enter_input();
+                    return false;
+                }
+            }
+        }
+        /**
+        * @brief Displays the user's reservations.
+        * 
+        * The function checks and displays the items reserved by the active user.
+        * If the user has no reservations, it notifies them that they have no borrowed material.
+        * 
+        * @return True if the user has reservations, otherwise false.
+        */
+        public bool ViewReservation()
+        {
+            bool findReservation = false;
+            ClearScreen();
+
+            for (int i = 0; i < reservedItems.Length; i++)
+            {
+                if (reservedItems[i] != null && reservedItems[i].Contains(active_user))
+                {
+                    Console.WriteLine($"The item {reservedItems[i]}.");
+                    findReservation = true;
+                    take_enter_input();
+                }
+            }
+
+            if (!findReservation)
+            {
+                Console.WriteLine("You have no borrowed material.");
+                take_enter_input();
+            }
+            return findReservation;
+        }
+        /**
+        * @brief Handles the event and workshop schedule menu.
+        * 
+        * The function displays options to view events, register for events, or exit.
+        * It takes user input and performs corresponding actions based on the choice.
+        * 
+        * @return True if the menu operates successfully, otherwise false.
+        */
+        public bool EventAndWorkshopSchedule()
+        {
+            bool isRunning = true;
+            while (isRunning)
+            {
+                ClearScreen();
+                Console.WriteLine("1. View Events");
+                Console.WriteLine("2. Register for Events");
+                Console.WriteLine("3. Exit");
+                Console.Write("Enter your choice (1-3):");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice))
+                {
+                    Console.WriteLine("Invalid choice. Please enter a number.");
+                    take_enter_input();
+                    continue;
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        ViewEvents();
+                        break;
+                    case 2:
+                        if (RegisterForEvents()) break;
+                        else continue;
+                    case 3:
+                        isRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        take_enter_input();
+                        break;
+                }
+            }
+            return true;
+        }
+        /**
+        * @brief Displays the available events.
+        * 
+        * The function shows the current list of events.
+        */
+        public void ViewEvents()
+        {
+            ClearScreen();
+            Console.WriteLine(events);
+            take_enter_input();
+        }
+        /**
+        * @brief Handles the event registration process.
+        * 
+        * The function displays the available events, prompts the user to enter their name, and select an event to register.
+        * It performs checks on user input and completes the registration process.
+        * 
+        * @return True if the user successfully registers for an event, otherwise false.
+        */
+        public bool RegisterForEvents()
+        {
+            ClearScreen();
+            Console.WriteLine(events);
+            Console.WriteLine("Please enter your name:");
+
+            userName = Console.ReadLine();
+
+            if (!EventUserCheck(userName))
+            {
+                Console.WriteLine("You entered an invalid username. Username must consist of letters.");
+                take_enter_input();
+                return false;
+            }
+
+            Console.WriteLine("Please select the event you want to register:");
+            eventNo = Console.ReadLine();
+            if (!EventNoCheck(eventNo))
+            {
+                Console.WriteLine("You entered wrong option number. Please try again...");
+                take_enter_input();
+                return false;
+            }
+
+            Console.WriteLine($"A reservation has been made for {userName} for the event {eventNo}. Simply stating your name at the entrance will be sufficient.");
+            take_enter_input();
+            return true;
+        }
+        /**
+        * @brief Checks if the event number is valid.
+        * 
+        * The function validates whether the entered event number corresponds to a valid option.
+        * 
+        * @param eventNo The event number entered by the user.
+        * @return True if the event number is valid, otherwise false.
+        */
+        public bool EventNoCheck(string eventNo)
+        {
+            return eventNo == "1" || eventNo == "2";
+        }
+        /**
+        * @brief Checks if the username is valid.
+        * 
+        * The function validates whether the entered username consists of letters.
+        * 
+        * @param userName The username entered by the user.
+        * @return True if the username is valid, otherwise false.
+        */
+        public bool EventUserCheck(string userName)
+        {
+            return Regex.IsMatch(userName, "^[A-Za-z ]+$");
+        }
+        /**
+        * @brief Displays library information.
+        * 
+        * The function shows information about the library.
+        */
+        public void LibraryInformations()
+        {
+            ClearScreen();
+            Console.WriteLine(lib_infos);
+            take_enter_input();
+        }
+        /**
+        * @brief Writes data to a binary file.
+        * 
+        * The function uses BinaryWriter to write various data (e.g., reserved items, user information, events) to a binary file.
+        * 
+        * @param filename The name of the binary file to write the data to.
+        */
+        public void WriteBinary(string filename)
+        {
+            using (BinaryWriter binarywriter = new BinaryWriter(File.Open(filename, FileMode.Create)))
+            {
+                foreach (var element in reservedItems)
+                {
+                    binarywriter.Write(element ?? "");
+                }
+
+                binarywriter.Write(reservedItemCount);
+
+                foreach (var element in books)
+                {
+                    binarywriter.Write(element);
+                }
+                foreach (var element in movies)
+                {
+                    binarywriter.Write(element);
+                }
+                foreach (var element in musics)
+                {
+                    binarywriter.Write(element);
+                }
+                foreach (var element in registered_user_name)
+                {
+                    binarywriter.Write(element);
+                }
+
+                binarywriter.Write(active_user);
+
+                binarywriter.Write(events);
+
+                binarywriter.Write(userName ?? "");
+
+                binarywriter.Write(eventNo ?? "");
+
+                binarywriter.Write(lib_infos);
+            }
+        }
+    }
+}

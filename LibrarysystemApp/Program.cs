@@ -13,5 +13,6 @@ internal class Program
     {
         Librarysystem librarySystem = new Librarysystem();
         librarySystem.MainMenu();
+        librarySystem.WriteBinary("LibraryData.bin");
     }
 }
