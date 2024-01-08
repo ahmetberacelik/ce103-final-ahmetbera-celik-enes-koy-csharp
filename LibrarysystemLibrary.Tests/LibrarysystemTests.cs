@@ -644,3 +644,185 @@ namespace LibrarysystemLibrary.Tests
             Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
             Console.SetIn(new StreamReader(Console.OpenStandardInput()));
         }
+        [Fact]
+        public void EventMenuInvalid()
+        {
+            var input = new StringReader("abc\n\n48\n\n3\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.EventAndWorkshopSchedule();
+
+            string expectedOutput = "1. View Events\r\n" +
+                "2. Register for Events\r\n" +
+                "3. Exit\r\n" +
+                "Enter your choice (1-3):" +
+                "Invalid choice. Please enter a number.\r\n" +
+                "1. View Events\r\n" +
+                "2. Register for Events\r\n" +
+                "3. Exit\r\n" +
+                "Enter your choice (1-3):" +
+                "Invalid choice. Please try again.\r\n" +
+                "1. View Events\r\n" +
+                "2. Register for Events\r\n" +
+                "3. Exit\r\n" +
+                "Enter your choice (1-3):";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void EventMenuValid()
+        {
+            var input = new StringReader("1\n\n2\n123\n\n3\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.EventAndWorkshopSchedule();
+
+            string expectedOutput = "1. View Events\r\n" +
+                "2. Register for Events\r\n" +
+                "3. Exit\r\n" +
+                "Enter your choice (1-3):" +
+                "Upcoming Library Events\n" +
+                "1 - Reading incentive program for children (Two days later, 5 p.m)\n" +
+                "2 - Book chat with the author (Five days later, 10 a.m)\n\r\n" +
+                "1. View Events\r\n" +
+                "2. Register for Events\r\n" +
+                "3. Exit\r\n" +
+                "Enter your choice (1-3):" +
+                "Upcoming Library Events\n" +
+                "1 - Reading incentive program for children (Two days later, 5 p.m)\n" +
+                "2 - Book chat with the author (Five days later, 10 a.m)\n\r\n" +
+                "Please enter your name:\r\n" +
+                "You entered an invalid username. Username must consist of letters.\r\n" +
+                "1. View Events\r\n" +
+                "2. Register for Events\r\n" +
+                "3. Exit\r\n" +
+                "Enter your choice (1-3):";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void RegisterForEventsValid()
+        {
+            var input = new StringReader("Example User\n1\n\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.RegisterForEvents();
+
+            string expectedOutput = "Upcoming Library Events\n" +
+                "1 - Reading incentive program for children (Two days later, 5 p.m)\n" +
+                "2 - Book chat with the author (Five days later, 10 a.m)\n\r\n" +
+                "Please enter your name:\r\n" +
+                "Please select the event you want to register:\r\n" +
+                "A reservation has been made for Example User for the event 1. " +
+                "Simply stating your name at the entrance will be sufficient.\r\n";
+
+            Assert.True(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void RegisterForEventsInvalid()
+        {
+            var input = new StringReader("Example User\nletter\n\n");
+            Console.SetIn(input);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.RegisterForEvents();
+
+            string expectedOutput = "Upcoming Library Events\n" +
+                "1 - Reading incentive program for children (Two days later, 5 p.m)\n" +
+                "2 - Book chat with the author (Five days later, 10 a.m)\n\r\n" +
+                "Please enter your name:\r\n" +
+                "Please select the event you want to register:\r\n" +
+                "You entered wrong option number. Please try again...\r\n";
+
+            Assert.False(result);
+            Assert.Equal(expectedOutput, output.ToString());
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()));
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
+        }
+
+        [Fact]
+        public void EventNoCheckValid()
+        {
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.EventNoCheck("1");
+            Assert.True(result);
+            bool result2 = librarysystem.EventNoCheck("2");
+            Assert.True(result2);
+        }
+
+        [Fact]
+        public void EventNoCheckInvalid()
+        {
+            var librarysystem = new Librarysystem
+            {
+                IsTestMode = true
+            };
+            bool result = librarysystem.EventNoCheck("9");
+            Assert.False(result);
+            bool result2 = librarysystem.EventNoCheck("-5");
+            Assert.False(result2);
+        }
+
+        [Fact]
+        public void WriteBinaryTestt()
+        {
+            var librarysystem = new Librarysystem();
+            string TestFileName = "testLibraryData.bin";
+
+            librarysystem.WriteBinary(TestFileName);
+
+            Assert.True(File.Exists(TestFileName));
+
+            var filelenght = new FileInfo(TestFileName);
+            Assert.True(filelenght.Length > 0);
+
+            File.Delete(TestFileName);
+        }
+    }
+}
