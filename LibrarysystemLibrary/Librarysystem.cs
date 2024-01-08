@@ -263,4 +263,235 @@ namespace LibrarysystemLibrary
             take_enter_input();
             return false;
         }
-    }
+        /**
+* @brief Displays the reservation and renewal menu and handles user input for reserving, restoring, and viewing reservations.
+* 
+* The function continuously presents the reservation and renewal menu options and processes the user's choice.
+* It includes options for reserving items, restoring items, viewing reservations, and exit. It redirects to the corresponding
+* functions based on the user's choice.
+* 
+* @return True if the reservation and renewal menu is running successfully, otherwise false.
+*/
+        public bool ReservationAndRenewal()
+        {
+            bool isRunning = true;
+            while (isRunning)
+            {
+                ClearScreen();
+                Console.WriteLine("1. Reserve Items");
+                Console.WriteLine("2. Restore Items");
+                Console.WriteLine("3. View Reservation");
+                Console.WriteLine("4. Exit");
+                Console.Write("Enter your choice (1-4):");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice))
+                {
+                    Console.WriteLine("Invalid choice. Please enter a number.");
+                    take_enter_input();
+                    continue;
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        ReserveItems();
+                        break;
+                    case 2:
+                        RestoreItems();
+                        break;
+                    case 3:
+                        ViewReservation();
+                        break;
+                    case 4:
+                        isRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        take_enter_input();
+                        break;
+                }
+            }
+            return true;
+        }
+        /**
+        * @brief Handles user login for reservation, prompting the user to register with their username.
+        * 
+        * The function prompts the user to enter their username and checks if the entered username
+        * is registered. If registered, it welcomes the user and sets the active user for reservations.
+        * If not registered, it notifies the user to check their entry.
+        * 
+        * @return True if the user is successfully logged in, otherwise false.
+*/
+        public bool ReservationScreenLogin()
+        {
+            ClearScreen();
+            Console.WriteLine("Please register with your user name.");
+            Console.WriteLine("Write your user name:");
+            string temporaryUsername = Console.ReadLine();
+            foreach (var registeredUserName in registered_user_name)
+            {
+                if (registeredUserName.Equals(temporaryUsername))
+                {
+                    Console.WriteLine($"Welcome {registeredUserName}");
+                    take_enter_input();
+                    active_user = registeredUserName;
+                    return true;
+                }
+            }
+
+            Console.WriteLine("The username you entered is not registered. Please check your entry.");
+            take_enter_input();
+            return false;
+        }
+        /**
+        * @brief Displays the reservation menu and handles user input for reserving books, movies, or music.
+        * 
+        * The function continuously presents the reservation menu options and processes the user's choice.
+         * It includes options for reserving books, movies, music, and exit. It redirects to the corresponding
+        * reserve functions based on the user's choice.
+        * 
+        * @return True if the reservation menu is running successfully, otherwise false.
+*/
+        public bool ReserveItems()
+        {
+            bool isRunning = true;
+            while (isRunning)
+            {
+                ClearScreen();
+                Console.WriteLine("1. Reserve Books");
+                Console.WriteLine("2. Reserve Movies");
+                Console.WriteLine("3. Reserve Music");
+                Console.WriteLine("4. Exit");
+                Console.Write("Enter your choice (1-4):");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice))
+                {
+                    Console.WriteLine("Invalid choice. Please enter a number.");
+                    take_enter_input();
+                    continue;
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        ReserveBook();
+                        break;
+                    case 2:
+                        ReserveMovie();
+                        break;
+                    case 3:
+                        ReserveMusic();
+                        break;
+                    case 4:
+                        isRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        take_enter_input();
+                        break;
+                }
+            }
+            return true;
+        }
+        /**
+        * @brief Handles the reservation process for books.
+        * 
+        * The function prompts the user to enter the name of the book they want to reserve. 
+        * It then checks the availability of the book and reserves it if available. 
+        * The user is notified of the reservation status.
+        * 
+        * @return True if the book is successfully reserved, otherwise false.
+*/
+        public bool ReserveBook()
+        {
+            ClearScreen();
+            Console.WriteLine("Please write book name you want to reserve, please pay attention to upper and lower case letters.");
+            Console.WriteLine("(A correct example: Crime and Punishment):");
+
+            string bookQuery = Console.ReadLine();
+
+            for (int i = 0; i < books.Length; i++)
+            {
+                if (books[i].Equals(bookQuery))
+                {
+                    reservedItems[reservedItemCount++] = $"{books[i]} is reserved by {active_user}";
+                    Console.WriteLine($"The book {books[i]} is available.");
+                    Console.WriteLine($"{books[i]} is reserved by {active_user}.");
+                    books[i] = "";
+                    take_enter_input();
+                    return true;
+                }
+            }
+
+            Console.WriteLine("Sorry, the book is not available.");
+            take_enter_input();
+            return false;
+        }
+        /**
+        * @brief Handles the reservation process for movies.
+        * 
+        * The function prompts the user to enter the name of the movie they want to reserve. 
+        * It then checks the availability of the movie and reserves it if available. 
+        * The user is notified of the reservation status.
+        * 
+        * @return True if the movie is successfully reserved, otherwise false.
+*/
+        public bool ReserveMovie()
+        {
+            ClearScreen();
+            Console.WriteLine("Please write movie name you want to reserve, please pay attention to upper and lower case letters.");
+            Console.WriteLine("(A correct example: Into the Wild):");
+
+            string movieQuery = Console.ReadLine();
+
+            for (int i = 0; i < movies.Length; i++)
+            {
+                if (movies[i].Equals(movieQuery))
+                {
+                    reservedItems[reservedItemCount++] = $"{movies[i]} is reserved by {active_user}";
+                    Console.WriteLine($"The movie {movies[i]} is available.");
+                    Console.WriteLine($"{movies[i]} is reserved by {active_user}.");
+                    movies[i] = "";
+                    take_enter_input();
+                    return true;
+                }
+            }
+
+            Console.WriteLine("Sorry, the movie is not available.");
+            take_enter_input();
+            return false;
+        }
+        /**
+        * @brief Handles the reservation process for music.
+        * 
+        * The function prompts the user to enter the name of the music they want to reserve. 
+        * It then checks the availability of the music and reserves it if available. 
+        * The user is notified of the reservation status.
+        * 
+        * @return True if the music is successfully reserved, otherwise false.
+*/
+        public bool ReserveMusic()
+        {
+            ClearScreen();
+            Console.WriteLine("Please write music name you want to reserve, please pay attention to upper and lower case letters.");
+            Console.WriteLine("(A correct example: Castle of Glass):");
+
+            string musicQuery = Console.ReadLine();
+
+            for (int i = 0; i < musics.Length; i++)
+            {
+                if (musics[i].Equals(musicQuery))
+                {
+                    reservedItems[reservedItemCount++] = $"{musics[i]} is reserved by {active_user}";
+                    Console.WriteLine($"The music {musics[i]} is available.");
+                    Console.WriteLine($"{musics[i]} is reserved by {active_user}.");
+                    musics[i] = "";
+                    take_enter_input();
+                    return true;
+                }
+            }
+
+            Console.WriteLine("Sorry, the music is not available.");
+            take_enter_input();
+            return false;
+        }
