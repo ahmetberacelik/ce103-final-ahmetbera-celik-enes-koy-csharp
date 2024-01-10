@@ -29,6 +29,9 @@ call doxygen Doxyfile
 echo Run Coverxygen
 call python -m coverxygen --xml-dir ./docs/doxygen/xml --src-dir ./ --format lcov --output ./docs/coverxygen/lcov.info --prefix %currentDir%\
 
+echo Exclude .md files from lcov.info using PowerShell
+powershell -Command "(Get-Content './docs/coverxygen/lcov.info' -Raw) -replace '(.*\.md.*)', '' | Set-Content './docs/coverxygen/lcov.info'"
+
 echo Run lcov genhtml
 call perl C:\ProgramData\chocolatey\lib\lcov\tools\bin\genhtml --legend --title "Documentation Coverage Report" ./docs/coverxygen/lcov.info -o docs/coverxygen
 
